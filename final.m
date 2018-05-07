@@ -2,16 +2,17 @@ clear all;
 close all;
 clc;
 %reading the video
-video = VideoReader('bounce_bkg.mp4');
-%defining 100 frames to obtain from the video, maximum =
+video = VideoReader('demo.mp4');
+%defining 200 frames to obtain from the video, maximum =
 %video.NumberOfFrames;
-frames = 100;
+frames = 200;
 folder = 'frames';
 goal_folder = 'goal';
 delete([folder filesep '*.jpg']);
 delete([goal_folder filesep '*.jpg']);
 textPos = [200 400];
 box_color = {'yellow'};
+count = 0;
 for iFrame=1:frames
     %get frame
     %try-catch block in case there are fewer than 100 frames
@@ -24,7 +25,7 @@ for iFrame=1:frames
         pos = identify_goal(frame);
     end
     %get an image with the ball detected and marked
-    [detected_image,count] = identify_ball(frame,pos);
+    [detected_image,count] = identify_ball(frame,pos,count);
     img = detected_image;
     if count == 1
         filename = [sprintf('%03d',iFrame) '.jpg']; 

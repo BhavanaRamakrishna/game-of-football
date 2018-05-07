@@ -1,7 +1,6 @@
-function [h,count] = drawCircles(img, centers, radii,pos)
+function [h,count] = drawCircles(img, centers, radii,pos,count)
     % Input: img - Original image; [centers, radii] - centers and radii of peaks detected
     close all;
-    count = 0;
     figure('visible','off'), imshow(img), title('ohn'),hold on;
     for i = 1 : size(centers, 1)
         rad = radii(i);
