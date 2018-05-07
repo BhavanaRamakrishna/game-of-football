@@ -7,11 +7,11 @@ function [detected_image, count] = identify_ball(frame,pos)
    %threshold to perform hough transform is there is a ball in the screen
    threshold_pixel = 90;
    number_of_pixels = find(image_edges);
-   min_radius = 30;
-   max_radius = 30;
+   min_radius = 50;
+   max_radius = 50;
    if (size(number_of_pixels,1)>threshold_pixel)
         %perform hough transform to detect circle
-        [centers, radii] = computeHoughTransform(blacknwhite, [min_radius, max_radius]);
+        [centers, radii] = computeHoughTransform(image_edges, [min_radius, max_radius]);
         [detected_image,count] = drawCircles(frame, centers, radii, pos);
    else
        %capture image frames that does not have the ball

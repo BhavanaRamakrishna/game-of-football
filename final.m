@@ -2,7 +2,7 @@ clear all;
 close all;
 clc;
 %reading the video
-video = VideoReader('roll.mp4');
+video = VideoReader('bounce_bkg.mp4');
 %defining 100 frames to obtain from the video, maximum =
 %video.NumberOfFrames;
 frames = 100;
