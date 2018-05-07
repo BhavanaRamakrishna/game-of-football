@@ -2,27 +2,46 @@ clear all;
 close all;
 clc;
 %reading the video
-video = VideoReader('Red_Ball.mp4');
+video = VideoReader('roll.mp4');
 %defining 100 frames to obtain from the video, maximum =
-%video.NumberOfFrames
+%video.NumberOfFrames;
 frames = 100;
+folder = 'frames';
+goal_folder = 'goal';
+delete([folder filesep '*.jpg']);
+delete([goal_folder filesep '*.jpg']);
+textPos = [200 400];
+box_color = {'yellow'};
 for iFrame=1:frames
     %get frame
-    frame = read(video, iFrame);
+    %try-catch block in case there are fewer than 100 frames
+    try
+        frame = read(video, iFrame);
+    catch ME
+        break
+    end
+    if iFrame == 1
+        pos = identify_goal(frame);
+    end
     %get an image with the ball detected and marked
-    detected_image = identify_ball(frame);
+    [detected_image,count] = identify_ball(frame,pos);
+    img = detected_image;
+    if count == 1
+        filename = [sprintf('%03d',iFrame) '.jpg']; 
+        img = insertText(detected_image,textPos,'Goal!!','FontSize',50,'BoxColor',box_color,'BoxOpacity',0.6,'TextColor','black');
+        imwrite(img,fullfile([goal_folder filesep filename]), 'jpg');
+    end
     %create destination to store these updated image frames
-    filename = [sprintf('%03d',iFrame) '.jpg'];
-    folder = 'file:///Users/bhavanarama/Desktop/Notes%20and%20Texts/Sem%202/Computer%20Vision/Final%20Project';
+    filename = [folder filesep sprintf('%03d',iFrame) '.jpg'];
     %store the image 
-    imwrite(detected_image,fullfile(filename), 'jpg');
+    imwrite(img,fullfile(filename), 'jpg');
 end
 
 %obtain all the stored image frames
-frame_names = dir(fullfile('*.jpg'));
+frame_names = dir(fullfile([folder filesep '*.jpg']));
 frame_names = {frame_names.name}';
 %create a video using those images
-outputVideo = VideoWriter('video_out','Uncompressed AVI');
+outputVideo = VideoWriter('video_out','Motion JPEG AVI');
 %defining framerate for the video obtained from original video
 outputVideo.FrameRate = video.FrameRate;
 open(outputVideo);
@@ -31,7 +50,7 @@ for ii = 1:length(frame_names)
     %the image frames and catch that into a frame which can be easily added
     %to a video without having to resize it, original images size will
     %differ inorder to make a video out of them
-    image = imread(fullfile(frame_names{ii}));
+    image = imread(fullfile([folder filesep frame_names{ii}]));
     close all;
     figure('visible', 'off'),imshow(image);
     axis tight;

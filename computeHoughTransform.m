@@ -29,8 +29,8 @@ function [centers, radii] = computeHoughTransform(img, radiiRange)
                 numRow = iNumRow;       
         end
     end
-    figure();
-    imshow(imadjust(mat2gray(houghAccmlr))); % diplay hough space
+    %figure();
+    %imshow(imadjust(mat2gray(houghAccmlr))); % diplay hough space
     centers = centers(1:numRow,:);
     radii = radii(1:numRow);
 end
