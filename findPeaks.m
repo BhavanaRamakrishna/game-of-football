@@ -2,7 +2,7 @@ function centers = findPeaks(houghAccmlr)
     % Input - hough accumlator
     % Output - centers(a,b) of peaks
     aPeaks = []; bPeaks = [];
-    threshold = 0.9 * max(max(houghAccmlr));
+    threshold = 0.99 * max(max(houghAccmlr));
     [maxb, maxa] = max(houghAccmlr);
     for i = 1:size(maxb, 2)
        if maxb(i) > threshold

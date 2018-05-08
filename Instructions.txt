@@ -1,0 +1,3 @@
+Run the code from final.m
+Input video is demo.mp4
+Output video generated is video_out.avi
